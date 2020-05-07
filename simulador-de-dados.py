@@ -9,19 +9,19 @@ class SimuladorDeDado:
         self.mensagem = 'Você gostaria de gerar um novo valor para o dado?[Sim/Não]:'
 
     def Iniciar(self):
-        resp = input(self.mensagem) 
-        try:
+        while True:
+            resp = input(self.mensagem)
             if resp == 'sim' or resp == 's':
                 self.GerarValorDoDado()
+                continuar = str(input("Quer continuar?[S/n]"))
+                if continuar == 's' or continuar == 'sim':
+                    continue
+                else:
+                    print('Saindo do simulador...')
+                    break
             elif resp == 'nao' or resp == 'n':
-                print('Agrademos sua participação!')   
-            else:
-                while True:
-                    if resp not in 'snsimnao':
-                        print('Por favor, Digite sim ou não.')
-                        break
-        except:
-            print('Ocorreu um erro ao receber sua resposta')
+                print('Agrademos sua participação!')
+                break
 
 
 
