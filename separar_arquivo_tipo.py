@@ -1,58 +1,47 @@
 import os
 
-audios = ['.ogg','.mp3']
-video = ['.mp4', '.mov', '.avi']
-imagens =  ['.jpg', 'jpeg', '.png']
-documentos = ['.pdf', '.log']
+audios_ext = ['.ogg','.mp3']
+video_ext = ['.mp4', '.mov', '.avi']
+imagens_ext =  ['.jpg', 'jpeg', '.png']
+documentos_ext = ['.pdf', '.log']
 
-def pegar_extensao(nomes):
-    index = nomes.rfind('.')
-    return nomes[index:]
-    
+def encontra_ext(name_file):
+    index = name_file.rfind('.')
+    return name_file[index:]
+
 def organizar(diretorio):
+    AUDIO_DIR = os.path.join(diretorio, "audio")
+    VIDEO_DIR = os.path.join(diretorio, "video")
+    IMG_DIR = os.path.join(diretorio, "imagens")
+    DOC_DIR = os.path.join(diretorio, "documentos")
+    OUTROS_DIR = os.path.join(diretorio, "outros")
     
-    AUDIO_dir = os.path.join(diretorio, "audios")
-    VIDEO_dir = os.path.join(diretorio, "videos")
-    DOC_dir = os.path.join(diretorio, "documentos")
-    IMAGENS_dir = os.path.join(diretorio, "imagens")
-    OUTROS_dir = os.path.join(diretorio, "outros")
+    if not os.path.isdir(AUDIO_DIR) : os.mkdir(AUDIO_DIR)
+    if not os.path.isdir(VIDEO_DIR) : os.mkdir(VIDEO_DIR)
+    if not os.path.isdir(IMG_DIR) : os.mkdir(IMG_DIR)
+    if not os.path.isdir(DOC_DIR) : os.mkdir(DOC_DIR)
+    if not os.path.isdir(OUTROS_DIR) : os.mkdir(OUTROS_DIR)
     
-    if not os.path.isdir(AUDIO_dir):
-        os.mkdir(AUDIO_dir)
-    if not os.path.isdir(VIDEO_dir):
-        os.mkdir(VIDEO_dir)
-    if not os.path.isdir(DOC_dir):
-        os.mkdir(DOC_dir)
-    if not os.path.isdir(IMAGENS_dir):    
-        os.mkdir(IMAGENS_dir)
-    if not os.path.isdir(OUTROS_dir):
-        os.mkdir(OUTROS_dir)
-
+    name_files = os.listdir(diretorio)
+    dir = ''
     
-    file_names = os.listdir(diretorio)
-    
-    pasta = ''
-    
-    for file in file_names:
+    for file in name_files:
         if os.path.isfile(os.path.join(diretorio, file)):
-            ext = str.lower(pegar_extensao(file))
-            if ext in audios:
-                pasta = AUDIO_dir
-            elif ext in video:
-                pasta = VIDEO_dir
-            elif ext in imagens:
-                pasta = IMAGENS_dir
-            elif ext in documentos:
-                pasta = DOC_dir
-            else:
-                pasta = OUTROS_dir
-        
+            ext = str.lower(encontra_ext(file))
+            if ext in audios_ext : dir = AUDIO_DIR
+            elif ext in video_ext : dir = VIDEO_DIR
+            elif ext in imagens_ext : dir = IMG_DIR
+            elif ext in documentos_ext : dir = DOC_DIR
+            else : dir = OUTROS_DIR
+            
             old = os.path.join(diretorio, file)
-            new = os.path.join(pasta, file)
+            new = os.path.join(dir, file)
+            
             os.rename(old, new)
-            print("Moveu", old, "->", new)
-
+            
+            print(f"MOVE {old} TO {new}")
+            
 if __name__ == '__main__':
+    organizar("teste")
     
-    dir_path = '/home/edudev/Downloads'
-    organizar(dir_path)
+            
